@@ -71,7 +71,7 @@ public partial class @DiaryInputs: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/upArrow"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Switch Tab Up"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -82,7 +82,7 @@ public partial class @DiaryInputs: IInputActionCollection2, IDisposable
                     ""path"": ""<Gamepad>/dpad/up"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Controller"",
                     ""action"": ""Switch Tab Up"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -93,7 +93,7 @@ public partial class @DiaryInputs: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/downArrow"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Switch Tab Down"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -104,7 +104,7 @@ public partial class @DiaryInputs: IInputActionCollection2, IDisposable
                     ""path"": ""<Gamepad>/dpad/down"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Controller"",
                     ""action"": ""Switch Tab Down"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -115,7 +115,7 @@ public partial class @DiaryInputs: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/d"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Switch Pages Right"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -126,7 +126,7 @@ public partial class @DiaryInputs: IInputActionCollection2, IDisposable
                     ""path"": ""<Gamepad>/rightStick/right"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Controller"",
                     ""action"": ""Switch Pages Right"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -137,7 +137,7 @@ public partial class @DiaryInputs: IInputActionCollection2, IDisposable
                     ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Switch Pages Left"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -148,7 +148,7 @@ public partial class @DiaryInputs: IInputActionCollection2, IDisposable
                     ""path"": ""<Gamepad>/rightStick/left"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Controller"",
                     ""action"": ""Switch Pages Left"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
@@ -156,7 +156,35 @@ public partial class @DiaryInputs: IInputActionCollection2, IDisposable
             ]
         }
     ],
-    ""controlSchemes"": []
+    ""controlSchemes"": [
+        {
+            ""name"": ""Keyboard&Mouse"",
+            ""bindingGroup"": ""Keyboard&Mouse"",
+            ""devices"": [
+                {
+                    ""devicePath"": ""<Keyboard>"",
+                    ""isOptional"": true,
+                    ""isOR"": false
+                },
+                {
+                    ""devicePath"": ""<Mouse>"",
+                    ""isOptional"": false,
+                    ""isOR"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Controller"",
+            ""bindingGroup"": ""Controller"",
+            ""devices"": [
+                {
+                    ""devicePath"": ""<Gamepad>"",
+                    ""isOptional"": true,
+                    ""isOR"": false
+                }
+            ]
+        }
+    ]
 }");
         // Diary
         m_Diary = asset.FindActionMap("Diary", throwIfNotFound: true);
@@ -291,6 +319,24 @@ public partial class @DiaryInputs: IInputActionCollection2, IDisposable
         }
     }
     public DiaryActions @Diary => new DiaryActions(this);
+    private int m_KeyboardMouseSchemeIndex = -1;
+    public InputControlScheme KeyboardMouseScheme
+    {
+        get
+        {
+            if (m_KeyboardMouseSchemeIndex == -1) m_KeyboardMouseSchemeIndex = asset.FindControlSchemeIndex("Keyboard&Mouse");
+            return asset.controlSchemes[m_KeyboardMouseSchemeIndex];
+        }
+    }
+    private int m_ControllerSchemeIndex = -1;
+    public InputControlScheme ControllerScheme
+    {
+        get
+        {
+            if (m_ControllerSchemeIndex == -1) m_ControllerSchemeIndex = asset.FindControlSchemeIndex("Controller");
+            return asset.controlSchemes[m_ControllerSchemeIndex];
+        }
+    }
     public interface IDiaryActions
     {
         void OnSwitchTabUp(InputAction.CallbackContext context);

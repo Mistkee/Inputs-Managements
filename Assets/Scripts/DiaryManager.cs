@@ -8,8 +8,8 @@ public class NotesTabScript : MonoBehaviour
 {
     PlayerInput inputs;
     [SerializeField]List<GameObject> tabs = new List<GameObject>();
-
-    int currentTab;
+    public List<GameObject> pagesOnTabs = new List<GameObject>();
+    int currentTab, currentPage;
 
     private void Awake()
     {
@@ -25,6 +25,7 @@ public class NotesTabScript : MonoBehaviour
     {
         currentTab = 0;
         tabs[0].SetActive(true);
+        CheckCurrentTab();
     }
 
     private void OnEnable()
@@ -69,23 +70,52 @@ public class NotesTabScript : MonoBehaviour
 
     void SwitchRightPage(InputAction.CallbackContext context)
     {
-        Debug.Log("switching to right page");
+        pagesOnTabs[currentPage].SetActive(false);
+        if (currentPage < pagesOnTabs.Count - 1)
+        {
+            currentPage++;
+            pagesOnTabs[currentPage].SetActive(true);
+        }
+        else
+        {
+            currentPage = 0;
+            pagesOnTabs[currentPage].SetActive(true);
+        }
     }
 
     void SwitchLeftPage(InputAction.CallbackContext context) 
     {
-        Debug.Log("switching to left page");
+        pagesOnTabs[currentPage].SetActive(false);
+        if (currentPage != 0)
+        {
+            currentPage--;
+            pagesOnTabs[currentPage].SetActive(true);
+        }
+        else
+        {
+            currentPage = pagesOnTabs.Count - 1;
+            pagesOnTabs[currentPage].SetActive(true);
+        }
     }
 
     void CheckCurrentTab()
     {
+        currentPage = 0;
         if (tabs[currentTab].tag != "Settings")
         {
+            pagesOnTabs.Clear();
+            for (int i = 0; i< tabs[currentTab].transform.childCount; i++)
+            {
+                pagesOnTabs.Add(tabs[currentTab].transform.GetChild(i).gameObject);
+                pagesOnTabs[i].SetActive(false);
+            }
+            pagesOnTabs[currentPage].SetActive(true);
             inputs.actions["Switch Pages Right"].performed += SwitchRightPage;
             inputs.actions["Switch Pages Left"].performed += SwitchLeftPage;
         }
         else
         {
+            pagesOnTabs.Clear();
             inputs.actions["Switch Pages Right"].performed -= SwitchRightPage;
             inputs.actions["Switch Pages Left"].performed -= SwitchLeftPage;
         }
