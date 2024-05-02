@@ -8,6 +8,19 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
     public class RebindUIScript : MonoBehaviour
     {
         public ControllerIcons gamepad;
+        public static RebindUIScript instance;
+
+        private void Awake()
+        {
+            instance = this;
+        }
+
+        public Sprite UpdateIcons(string controlPath)
+        {
+            var icon = default(Sprite);
+            icon = gamepad.GetSprite(controlPath);
+            return icon;
+        }
 
         [Serializable]
         public struct ControllerIcons
@@ -38,7 +51,7 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
                 // map from that to the sprites we have for gamepads.
                 switch (controlPath)
                 {
-                    case "buttonSouth": return buttonSouth;
+                    case "Y": return buttonSouth;
                     case "buttonNorth": return buttonNorth;
                     case "buttonEast": return buttonEast;
                     case "buttonWest": return buttonWest;

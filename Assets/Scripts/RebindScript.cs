@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Samples.RebindUI;
 
 public class RebindScript : MonoBehaviour
 {
@@ -9,6 +11,9 @@ public class RebindScript : MonoBehaviour
     InputActionRebindingExtensions.RebindingOperation rebinding;
     GameObject gameObjectUsed;
     InputAction rebindedInput;
+    TMP_Text bindingText;
+    Sprite newIcon;
+
     
     public static RebindScript instance;
     private void Awake()
@@ -34,12 +39,17 @@ public class RebindScript : MonoBehaviour
         rebinding.Start();
         inputToRebind.Enable();
         rebindedInput = inputToRebind;
+        Debug.Log(inputToRebind.GetBindingDisplayString());
+        newIcon = RebindUIScript.instance.UpdateIcons(inputToRebind.GetBindingDisplayString());
     }
 
     void RebindCompleted()
     {
+        int bindingIndex = rebindedInput.GetBindingIndexForControl(rebindedInput.controls[0]);
+
+        bindingText.text = InputControlPath.ToHumanReadableString(rebindedInput.bindings[bindingIndex].effectivePath, InputControlPath.HumanReadableStringOptions.OmitDevice) ;
         rebinding.Dispose();
-        gameObjectUsed.GetComponent<CurrentBinding>().SetCurrentBinding(rebindedInput);
+        gameObjectUsed.GetComponent<CurrentBinding>().SetCurrentBinding(rebindedInput, newIcon, bindingText);
         waitingForInput.SetActive(false);
     }
 }
