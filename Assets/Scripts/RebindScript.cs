@@ -25,8 +25,9 @@ public class RebindScript : MonoBehaviour
         }
     }
 
-    public void RebindData(InputAction inputToRebind, GameObject gameObjectButton)
+    public void RebindData(InputAction inputToRebind, GameObject gameObjectButton, TMP_Text oldText)
     {
+        bindingText = oldText;
         gameObjectUsed = gameObjectButton;
         Rebinding(inputToRebind);
     }
@@ -47,7 +48,7 @@ public class RebindScript : MonoBehaviour
     {
         int bindingIndex = rebindedInput.GetBindingIndexForControl(rebindedInput.controls[0]);
 
-        //bindingText.text = InputControlPath.ToHumanReadableString(rebindedInput.bindings[bindingIndex].effectivePath, InputControlPath.HumanReadableStringOptions.OmitDevice) ;
+        bindingText.text = InputControlPath.ToHumanReadableString(rebindedInput.bindings[bindingIndex].effectivePath, InputControlPath.HumanReadableStringOptions.OmitDevice) ;
         rebinding.Dispose();
         gameObjectUsed.GetComponent<CurrentBinding>().SetCurrentBinding(rebindedInput, newIcon, bindingText);
         waitingForInput.SetActive(false);

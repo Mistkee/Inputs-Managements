@@ -16,10 +16,16 @@ public class CurrentBinding : MonoBehaviour
     string currentDevice;
     private void Awake()
     {
-        currentDevice = GameObject.Find("Canvas").GetComponent<PlayerInput>().currentControlScheme;
+        
         currentBinding = firstBinding;
 
-        if(currentDevice == "Keyboard&Mouse")
+       
+    }
+
+    private void Update()
+    {
+        currentDevice = GameObject.Find("Canvas").GetComponent<PlayerInput>().currentControlScheme;
+        if (currentDevice == "Keyboard&Mouse")
         {
             isUsingController = false;
             imageDisplayed.SetActive(false);
@@ -28,21 +34,12 @@ public class CurrentBinding : MonoBehaviour
         {
             isUsingController = true;
             bindingText.enabled = false;
+            imageDisplayed.SetActive(true);
         }
-    }
-
-    private void Update()
-    {
-        InputUser.onChange += ChangedDevice;
-    }
-
-    private void ChangedDevice()
-    {
-
     }
     public void InitiateRebind()
     {
-        RebindScript.instance.RebindData(currentBinding, gameObject);
+        RebindScript.instance.RebindData(currentBinding, gameObject, bindingText);
     }
 
     public void SetCurrentBinding(InputAction newBinding, Sprite newIcon, TMP_Text newKeyboardIcon)
