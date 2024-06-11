@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Users;
 using UnityEngine.UIElements;
 
 public class CurrentBinding : MonoBehaviour
@@ -30,6 +31,15 @@ public class CurrentBinding : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        InputUser.onChange += ChangedDevice;
+    }
+
+    private void ChangedDevice()
+    {
+
+    }
     public void InitiateRebind()
     {
         RebindScript.instance.RebindData(currentBinding, gameObject);
